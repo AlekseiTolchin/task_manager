@@ -20,7 +20,7 @@ class TaskUpdateData:
     status: Optional[TaskStatus] = None
 
 
-class TaskRepository(ABC):
+class ITaskRepository(ABC):
     @abstractmethod
     async def create(self, task_data: TaskCreateData) -> Task:
         pass
