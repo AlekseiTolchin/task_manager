@@ -30,7 +30,7 @@ class ITaskRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_all(self, status: Optional[TaskStatus] = None) -> List[Task]:
+    async def get_all(self) -> List[Task]:
         pass
 
     @abstractmethod
