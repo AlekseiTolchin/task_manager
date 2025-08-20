@@ -33,7 +33,7 @@ async def get_task(
 
 @router.post('/', response_model=TaskResponse, status_code=201)
 async def create_task(
-        task: TaskCreate,
+        task: Annotated[TaskCreate, Depends()],
         service: Annotated[TaskService, Depends(get_task_service)]
 ):
     task_data = TaskCreateData(title=task.title, description=task.description)
@@ -44,7 +44,7 @@ async def create_task(
 @router.put('/{task_id}', response_model=TaskResponse)
 async def update_task(
         task_id: UUID,
-        task: TaskUpdate,
+        task: Annotated[TaskUpdate, Depends()],
         service: Annotated[TaskService, Depends(get_task_service)]
 ):
     task_data = TaskUpdateData(

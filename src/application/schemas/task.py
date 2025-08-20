@@ -18,7 +18,7 @@ class TaskCreate(TaskBase):
 
 
 class TaskUpdate(TaskBase):
-    id: UUID
+    pass
 
 
 class TaskResponse(TaskBase):
