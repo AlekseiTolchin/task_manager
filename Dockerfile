@@ -19,6 +19,8 @@ RUN poetry install --no-ansi
 
 COPY ./src /app/src
 COPY .env /app/
+COPY pytest.ini /app/
+COPY tests /app/
 COPY alembic.ini /app/
 COPY entrypoint.sh /app/
 RUN chmod +x /app/entrypoint.sh
