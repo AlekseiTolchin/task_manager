@@ -30,7 +30,7 @@ class SQLAlchemyTaskRepository(ITaskRepository):
         return TaskORM(
             title=data.title,
             description=data.description,
-            status=TaskStatus.CREATED.value
+            status=TaskStatus.CREATED.value,
         )
 
     async def create(self, task: TaskCreateData) -> Task:
@@ -39,7 +39,6 @@ class SQLAlchemyTaskRepository(ITaskRepository):
         await self.db_session.commit()
         await self.db_session.refresh(task_orm)
         return self._to_domain_model(task_orm)
-
 
     async def get_by_id(self, task_id: UUID) -> Optional[Task]:
         orm_task = await self.db_session.scalar(select(TaskORM).where(TaskORM.id == task_id))
@@ -52,6 +51,8 @@ class SQLAlchemyTaskRepository(ITaskRepository):
 
     async def update(self, task_id: UUID, task: TaskUpdateData) -> Optional[Task]:
         orm_task = await self.db_session.scalar(select(TaskORM).where(TaskORM.id == task_id))
+        if not orm_task:
+            return None
         orm_task.title = task.title
         orm_task.description = task.description
         orm_task.status = task.status

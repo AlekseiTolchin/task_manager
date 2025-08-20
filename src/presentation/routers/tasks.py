@@ -1,4 +1,4 @@
-from typing import Annotated, List, Optional
+from typing import Annotated, List
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, status, HTTPException
@@ -50,7 +50,7 @@ async def update_task(
     task_data = TaskUpdateData(
         title=task.title,
         description=task.description,
-        status=task.status
+        status=task.status,
     )
     updated_task = await service.update_task(task_id, task_data)
     if updated_task is None:

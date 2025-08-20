@@ -2,6 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 import pytest_asyncio
+
 from fastapi import FastAPI
 from httpx import AsyncClient, ASGITransport
 from sqlalchemy import delete
@@ -49,7 +50,7 @@ async def app_test(async_sessionmaker):
 @pytest_asyncio.fixture
 async def client(app_test: FastAPI):
     transport = ASGITransport(app=app_test)
-    async with AsyncClient(transport=transport, base_url="http://testserver") as c:
+    async with AsyncClient(transport=transport, base_url='http://testserver') as c:
         yield c
 
 
