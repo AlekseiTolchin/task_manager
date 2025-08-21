@@ -2,6 +2,7 @@ import asyncio
 
 
 async def test_create_and_get_task(client):
+    """Тест создания задачи и получения её по ID."""
     task_payload= {
         'title': 'Test Task',
         'description': 'Test Description'
@@ -21,12 +22,14 @@ async def test_create_and_get_task(client):
 
 
 async def test_get_task_not_found(client):
+    """Тест получения несуществующей задачи (ожидается 404)."""
     response = await client.get(f'/api/tasks/3fa85f64-5717-4562-b3fc-2c963f66afa6')
     assert response.status_code == 404
     assert response.json()['detail'] == 'Task not found'
 
 
 async def test_update_task(client):
+    """Тест полного обновления задачи."""
     task = {
         'title': 'Task',
         'description': 'Description'
@@ -51,6 +54,7 @@ async def test_update_task(client):
 
 
 async def test_delete_task(client):
+    """Тест удаления задачи и последующего получения 404."""
     task = {
         'title': 'Task',
         'description': 'Description'
@@ -68,6 +72,7 @@ async def test_delete_task(client):
 
 
 async def test_get_all_tasks(client):
+    """Тест получения всех задач."""
     task_1 = {
         'title': 'Task_1',
         'description': 'Description_1'
@@ -88,12 +93,14 @@ async def test_get_all_tasks(client):
 
 
 async def test_create_task_invalid_payload(client):
+    """Тест создания задачи с невалидными данными (ожидается 422)."""
     task_payload = {'description': 'description only'}
     response = await client.post('/api/tasks/', json=task_payload)
     assert response.status_code == 422
 
 
 async def test_update_task_invalid_status(client):
+    """Тест обновления задачи с невалидным статусом (ожидается 422)."""
     task = {'title': 'Task', 'description': 'Desc'}
     create_response = await client.post('/api/tasks/', json=task)
     assert create_response.status_code == 201

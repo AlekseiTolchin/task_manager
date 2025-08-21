@@ -19,6 +19,7 @@ TEST_DATABASE_URL = 'sqlite+aiosqlite:///:memory:'
 
 @pytest_asyncio.fixture(scope='session')
 async def test_engine():
+    """Создаёт асинхронный движок для тестовой SQLite-базы."""
     engine = create_async_engine(TEST_DATABASE_URL, echo=False, future=True)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -30,11 +31,13 @@ async def test_engine():
 
 @pytest_asyncio.fixture(scope='session')
 async def async_sessionmaker(test_engine):
+    """Возвращает асинхронный sessionmaker для тестовой БД."""
     return sessionmaker(test_engine, class_=AsyncSession, expire_on_commit=False)
 
 
 @pytest_asyncio.fixture(scope='session')
 async def app_test(async_sessionmaker):
+    """Создаёт тестовое FastAPI-приложение с подменённой зависимостью get_db_session."""
     async def _get_db_session():
         async with async_sessionmaker() as session:
             try:
@@ -49,6 +52,7 @@ async def app_test(async_sessionmaker):
 
 @pytest_asyncio.fixture
 async def client(app_test: FastAPI):
+    """Возвращает асинхронного тестового клиента для FastAPI-приложения."""
     transport = ASGITransport(app=app_test)
     async with AsyncClient(transport=transport, base_url='http://testserver') as c:
         yield c
@@ -56,6 +60,7 @@ async def client(app_test: FastAPI):
 
 @pytest_asyncio.fixture(autouse=True)
 async def clear_tasks_table(async_sessionmaker):
+    """Очищает таблицу задач перед каждым тестом."""
     async with async_sessionmaker() as session:
         await session.execute(delete(TaskORM))
         await session.commit()
@@ -63,4 +68,5 @@ async def clear_tasks_table(async_sessionmaker):
 
 @pytest.fixture
 def mock_repo():
+    """Возвращает асинхронный мок-репозиторий для юнит-тестов."""
     return AsyncMock()

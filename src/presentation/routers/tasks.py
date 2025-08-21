@@ -16,6 +16,7 @@ router = APIRouter(
 
 @router.get('/', response_model=List[TaskResponse])
 async def get_tasks(service: Annotated[TaskService, Depends(get_task_service)]):
+    """Получить список всех задач."""
     tasks = await service.get_all_tasks()
     return [TaskResponse.model_validate(task) for task in tasks]
 
@@ -25,6 +26,7 @@ async def get_task(
         task_id: UUID,
         service: Annotated[TaskService, Depends(get_task_service)]
 ):
+    """Получить задачу по ID."""
     task = await service.get_task_by_id(task_id)
     if task is None:
         raise HTTPException(status_code=404, detail='Task not found')
@@ -36,6 +38,7 @@ async def create_task(
         task: TaskCreate,
         service: Annotated[TaskService, Depends(get_task_service)]
 ):
+    """Создать новую задачу."""
     task_data = TaskCreateData(title=task.title, description=task.description)
     new_task = await service.create_task(task_data)
     return TaskResponse.model_validate(new_task)
@@ -47,6 +50,7 @@ async def update_task(
         task: TaskUpdate,
         service: Annotated[TaskService, Depends(get_task_service)]
 ):
+    """Обновить существующую задачу."""
     task_data = TaskUpdateData(
         title=task.title,
         description=task.description,
@@ -63,6 +67,7 @@ async def delete_task(
         task_id: UUID,
         service: Annotated[TaskService, Depends(get_task_service)]
 ):
+    """Удалить задачу по ID."""
     success = await service.delete_task(task_id)
     if not success:
         raise HTTPException(status_code=404, detail='Task not found')

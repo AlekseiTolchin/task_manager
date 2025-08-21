@@ -6,6 +6,7 @@ from src.application.services.task_service import TaskService
 
 
 async def test_get_task_by_id_found(mock_repo):
+    """Получение задачи по ID через сервис."""
     mock_task = Task(
         id=UUID('3fa85f64-5717-4562-b3fc-2c963f66afa6'),
         title='A',
@@ -22,6 +23,7 @@ async def test_get_task_by_id_found(mock_repo):
 
 
 async def test_create_task(mock_repo):
+    """Создание задачи через сервис."""
     create_data = TaskCreateData(title='T', description='D')
     mock_task = Task(
         id=UUID("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
@@ -39,6 +41,7 @@ async def test_create_task(mock_repo):
 
 
 async def test_update_task_found(mock_repo):
+    """Обновление задачи через сервис."""
     update_data = TaskUpdateData(title='T2', description='D2', status='в работе')
     task_id = UUID("3fa85f64-5717-4562-b3fc-2c963f66afa6")
     mock_task = Task(
@@ -57,6 +60,7 @@ async def test_update_task_found(mock_repo):
 
 
 async def test_delete_task_success(mock_repo):
+    """Удаление задачи через сервис."""
     task_id = UUID('3fa85f64-5717-4562-b3fc-2c963f66afa6')
     mock_repo.delete.return_value = True
     service = TaskService(task_repo=mock_repo)
