@@ -9,7 +9,7 @@ from src.domain.enums.task_status import TaskStatus
 
 class TaskBase(BaseModel):
     title: str
-    description: str
+    description: Optional[str] = None
     status: Optional[TaskStatus] = None
 
 

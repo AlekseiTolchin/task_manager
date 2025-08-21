@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class TaskStatus(str, Enum):
-    CREATED = 'создана'
+    CREATED = 'создано'
     IN_PROGRESS = 'в работе'
-    COMPLETED = 'завершена'
+    COMPLETED = 'завершено'

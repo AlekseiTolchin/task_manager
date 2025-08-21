@@ -37,7 +37,7 @@ async def test_update_task(client):
     updated_task_data = {
         'title': 'Updated Task',
         'description': 'Updated Description',
-        'status': 'в работе'
+        'status': 'завершено'
     }
     create_response = await client.post('/api/tasks/', json=task)
     assert create_response.status_code == 201
@@ -49,7 +49,7 @@ async def test_update_task(client):
     updated = update_response.json()
     assert updated['title'] == 'Updated Task'
     assert updated['description'] == 'Updated Description'
-    assert updated['status'] == 'в работе'
+    assert updated['status'] == 'завершено'
     assert updated['created_at'] < updated['updated_at']
 
 
